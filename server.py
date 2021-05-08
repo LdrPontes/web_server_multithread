@@ -1,4 +1,4 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 import threading
 
@@ -8,16 +8,14 @@ PORT = 6789
 class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
     pass
 
-class HttpRequestHandler(SimpleHTTPRequestHandler): 
-
+class HttpRequestHandler(BaseHTTPRequestHandler): 
     def do_GET(self):
         self.send_response(200)
+        self.send_header('Connection', 'close')
         self.end_headers()
         message =  threading.currentThread().getName()
         self.wfile.write(message.encode('utf8'))
         return
-
-
 
 def Main():
     httpServer = ThreadingSimpleServer((HOST, PORT), HttpRequestHandler)
