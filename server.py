@@ -12,7 +12,7 @@ class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
 class HttpRequestHandler(BaseHTTPRequestHandler): 
     def do_GET(self):
         print(self.headers)
-        
+        print(threading.currentThread().getName())
         self.handle_request()
 
     def handle_request(self):
